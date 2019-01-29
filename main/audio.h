@@ -13,7 +13,11 @@ struct music_t {
   int length_A;
   int length_B;
 };
-
+struct tract_data_t {
+  String name;
+  unsigned int track_length;
+  unsigned int play_head;
+};
 
 extern int raw_audio_value;
 void job_audio(job_t * self, unsigned long time);
@@ -21,4 +25,5 @@ void job_audio(job_t * self, unsigned long time);
 extern music_t * p_library;
 int set_track(int track_index);
 
+void calculate_track();
 #endif

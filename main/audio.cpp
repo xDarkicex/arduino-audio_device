@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "audio.h"
 #include "job.h"
+#include "lcd.h"
+#include "led.h"
 #include "notes.h"
 #include "button.h"
 #define AUDIO_PIN_1 9
@@ -8,7 +10,7 @@
 #define AUDIO_PAUSE 0
 int raw_audio_value;
 unsigned long int start_time = 0;
-
+float run_time = 0;
 music_t * current_track;
 
 note_t mario_overworld[] = {
@@ -165,9 +167,27 @@ int set_track(int track_index)
 
   start_time = 0;
   noTone(AUDIO_PIN_1);
+  calculate_track();
+  set_lcd(1, String(run_time));
   audio_play();
+  noTone(AUDIO_PIN_1);
+  
 }
 
+void calculate_track() 
+{
+  float temp_runtime = 0;
+  for (int index = 0; index <= current_track->length_A; index++)
+  {
+
+    temp_runtime += current_track->track_A[index].duration;
+    
+  }
+ 
+  run_time = (temp_runtime / 1000);
+  
+  Serial.println(run_time);
+}
 
 void audio_pause() 
 {
